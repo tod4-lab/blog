@@ -21,12 +21,6 @@ mybatis-plus:
     db-config:
       id-type: assign_id
 
-aliyun:
-  oss:
-    bucket-name: hikaru0530
-    access-key-secret: bfpAVjGSKyCHjuobkKU5TGskaxEXOX
-    access-key-id: LTAI5tJ2eedCbj1UDB1PrHRb
-    bucket-domain: hikaru0530.oss-cn-hangzhou.aliyuncs.com
-    end-point: oss-cn-hangzhou.aliyuncs.com
+
 
 
