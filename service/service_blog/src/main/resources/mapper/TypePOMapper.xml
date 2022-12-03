@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hikaru.blog.mapper.TypePOMapper">
+
+    <resultMap id="BaseResultMap" type="com.hikaru.entity.po.TypePO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,name
+    </sql>
+
+    <select id="selectTypePOInfoByBlogId" resultType="TypePO">
+        select *
+        from t_type
+        where id = (select type_id from inner_type_blog where blog_id = ${blogId})
+    </select>
+
+    <select id="selectContentTypePage" resultType="ContentTypeVO">
+        select t_type.id, t_type.name, t_type.create_time, count(inner_type_blog.id) as blogNum
+        from t_type
+                 left join inner_type_blog on t_type.id = inner_type_blog.type_id
+        group by t_type.id
+    </select>
+
+    <select id="selectContentTypeInfo" resultType="ContentTypeVO">
+        select t_type.id, t_type.name, t_type.create_time, count(inner_type_blog.id) as blogNum
+        from t_type
+                 left join inner_type_blog on t_type.id = inner_type_blog.type_id
+        group by t_type.id
+    </select>
+</mapper>

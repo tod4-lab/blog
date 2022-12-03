@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hikaru.blog.mapper.BlogPOMapper">
+
+    <resultMap id="BaseResultMap" type="com.hikaru.entity.po.BlogPO">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="firstPicture" column="first_picture" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="views" column="views" jdbcType="INTEGER"/>
+        <result property="appreciation" column="appreciation" jdbcType="INTEGER"/>
+        <result property="shareStatement" column="share_statement" jdbcType="INTEGER"/>
+        <result property="commentAbled" column="comment_abled" jdbcType="INTEGER"/>
+        <result property="published" column="published" jdbcType="INTEGER"/>
+        <result property="recommend" column="recommend" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,title,content,
+        first_picture,type,views,
+        appreciation,share_statement,comment_abled,
+        published,recommend,create_time,
+        update_time
+    </sql>
+
+    <select id="getBlogManageVOInfoList" resultType="BlogManageVO">
+        select t_blog.*, t_type.name as blogTypeName, t_type.id as blogTypeId
+        from t_blog
+                 LEFT JOIN inner_type_blog on t_blog.id = inner_type_blog.blog_id
+                 LEFT JOIN t_type on inner_type_blog.type_id = t_type.id
+    </select>
+
+    <insert id="insertInnerBlogType">
+        insert into inner_type_blog(blog_id, type_id)
+        values (${blogId}, ${typeId})
+    </insert>
+
+    <insert id="insertInnerBlogLabel">
+        insert into inner_label_blog(blog_id, label_id)
+        values (${blogId}, ${labelId})
+    </insert>
+
+    <select id="selectBlogPageInfoByTypeId" resultType="BlogVO">
+        select t_blog.*,
+               t_type.id    as blogTypeId,
+               t_type.name  as blogTypeName,
+               t_label.id   as blogLabelId,
+               t_label.name as blogLabelName
+        from t_blog
+                 left join inner_type_blog on t_blog.id = inner_type_blog.blog_id
+                 left join t_type on t_type.id = inner_type_blog.type_id
+                 left join inner_label_blog on t_blog.id = inner_label_blog.blog_id
+                 left join t_label on t_label.id = inner_label_blog.label_id
+        where t_type.id = ${typeId}
+    </select>
+
+    <select id="selectBlogPageInfoByLabelId" resultType="BlogVO">
+        select t_blog.*,
+               t_type.id    as blogTypeId,
+               t_type.name  as blogTypeName,
+               t_label.id   as blogLabelId,
+               t_label.name as blogLabelName
+        from t_blog
+                 left join inner_type_blog on t_blog.id = inner_type_blog.blog_id
+                 left join t_type on t_type.id = inner_type_blog.type_id
+                 left join inner_label_blog on t_blog.id = inner_label_blog.blog_id
+                 left join t_label on t_label.id = inner_label_blog.label_id
+        where t_label.id = ${labelId}
+    </select>
+
+    <select id="selectAllBlogPageInfo" resultType="BlogVO">
+        select t_blog.*,
+               t_type.id    as blogTypeId,
+               t_type.name  as blogTypeName,
+               t_label.id   as blogLabelId,
+               t_label.name as blogLabelName
+        from t_blog
+                 left join inner_type_blog on t_blog.id = inner_type_blog.blog_id
+                 left join t_type on t_type.id = inner_type_blog.type_id
+                 left join inner_label_blog on t_blog.id = inner_label_blog.blog_id
+                 left join t_label on t_label.id = inner_label_blog.label_id
+        order by update_time DESC
+    </select>
+
+
+    <select id="selectBlogCommentInfoByBlogId" resultType="BlogCommentVO">
+        select t_comment.*
+        from t_comment
+                 left join inner_comment_blog on t_comment.id = inner_comment_blog.comment_id
+        where inner_comment_blog.blog_id = ${blogId}
+    </select>
+
+    <insert id="insertInnerCommentBlog">
+        insert into inner_comment_blog(blog_id, comment_id)
+        values (${blogId}, ${commentId})
+    </insert>
+</mapper>

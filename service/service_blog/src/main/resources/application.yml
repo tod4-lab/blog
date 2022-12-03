@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: blog-blogService
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://192.168.60.100/blog?characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 192.168.60.100
+    port: 6379
+
+server:
+  port: 8080
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.hikaru.entity
+  global-config:
+    db-config:
+      id-type: assign_id
+
+aliyun:
+  oss:
+    bucket-name: hikaru0530
+    access-key-secret: bfpAVjGSKyCHjuobkKU5TGskaxEXOX
+    access-key-id: LTAI5tJ2eedCbj1UDB1PrHRb
+    bucket-domain: hikaru0530.oss-cn-hangzhou.aliyuncs.com
+    end-point: oss-cn-hangzhou.aliyuncs.com
+
+
